@@ -1,0 +1,44 @@
+{
+  "sections": [
+    {
+      "id": "hero",
+      "shapePath": "M50,10 L90,90 L10,90 Z",
+      "color": "#6366f1",
+      "scale": 1,
+      "rotation": 0,
+      "opacity": 1
+    },
+    {
+      "id": "about",
+      "shapePath": "M50,10 Q90,50 50,90 Q10,50 50,10 Z",
+      "color": "#8b5cf6",
+      "scale": 1.2,
+      "rotation": 45,
+      "opacity": 0.9
+    },
+    {
+      "id": "features",
+      "shapePath": "M50,10 L80,40 L80,80 L50,90 L20,80 L20,40 Z",
+      "color": "#ec4899",
+      "scale": 0.8,
+      "rotation": 90,
+      "opacity": 0.8
+    },
+    {
+      "id": "showcase",
+      "shapePath": "M50,10 C80,10 90,40 90,50 C90,80 60,90 50,90 C20,90 10,60 10,50 C10,20 30,10 50,10 Z",
+      "color": "#f59e0b",
+      "scale": 1.5,
+      "rotation": 180,
+      "opacity": 0.7
+    },
+    {
+      "id": "contact",
+      "shapePath": "M50,10 L85,25 L85,75 L50,90 L15,75 L15,25 Z",
+      "color": "#10b981",
+      "scale": 1,
+      "rotation": 270,
+      "opacity": 1
+    }
+  ]
+}
