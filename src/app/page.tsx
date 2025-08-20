@@ -4,34 +4,16 @@ import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { SmoothScroll } from '@/components/Layout/SmoothScroll';
 import { ShapeAnimator } from '@/components/ShapeAnimator/ShapeAnimator';
-import { ScrollSection } from '@/components/ScrollSection/ScrollSection';
+import { Hero } from '@/components/Hero/Hero';
+import { Features } from '@/components/Features/Features';
+import { Testimonials } from '@/components/Testimonials/Testimonials';
+import { Pricing } from '@/components/Pricing/Pricing';
+import { Contact } from '@/components/Contact/Contact';
+import { Footer } from '@/components/Footer/Footer';
+import { PageTransition } from '@/components/PageTransition/PageTransition';
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const heroVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 1,
-        staggerChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
-  };
 
   return (
     <SmoothScroll>
@@ -39,77 +21,168 @@ export default function Home() {
         <ShapeAnimator containerRef={containerRef} />
         
         {/* Hero Section */}
-        <motion.section
-          className="min-h-screen flex items-center justify-center px-6 lg:px-12 relative overflow-hidden"
-          variants={heroVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="max-w-4xl mx-auto text-center z-20 lg:ml-96">
-            <motion.h1
-              className="text-6xl lg:text-8xl font-bold mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
-              variants={itemVariants}
-            >
-              Ethereal Shapes
-            </motion.h1>
-            <motion.p
-              className="text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto"
-              variants={itemVariants}
-            >
-              Experience the magic of morphing geometric forms that dance and transform as you scroll through this immersive journey.
-            </motion.p>
-            <motion.button
-              className="px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-full font-semibold text-lg hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
-              variants={itemVariants}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Begin Journey
-            </motion.button>
-          </div>
-          
-          {/* Background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900" />
-        </motion.section>
+        <PageTransition>
+          <Hero />
+        </PageTransition>
 
         {/* About Section */}
-        <ScrollSection
-          id="about"
-          title="The Art of Transformation"
-          description="Watch as simple geometric shapes evolve into complex forms, telling stories through motion and color. Each scroll reveals a new chapter in this visual narrative, where mathematics meets art in perfect harmony."
-          reverse={false}
-          className="lg:mr-96"
-        />
+        <PageTransition>
+          <section id="about" className="py-20 px-6 lg:px-12 relative overflow-hidden lg:mr-96">
+            <div className="max-w-6xl mx-auto">
+              <motion.div
+                className="text-center mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+              >
+                <motion.h2
+                  className="text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
+                  animate={{
+                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                  }}
+                  transition={{
+                    duration: 10,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }}
+                  style={{
+                    backgroundSize: '200% 200%',
+                  }}
+                >
+                  The Art of Transformation
+                </motion.h2>
+                <motion.p
+                  className="text-xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.8 }}
+                  viewport={{ once: true }}
+                >
+                  Watch as simple geometric shapes evolve into complex forms, telling stories through motion and color. 
+                  Each scroll reveals a new chapter in this visual narrative, where mathematics meets art in perfect harmony.
+                </motion.p>
+              </motion.div>
+
+              <motion.div
+                className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+              >
+                <motion.div
+                  className="space-y-6"
+                  initial={{ x: -50, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  viewport={{ once: true }}
+                >
+                  {[
+                    {
+                      title: "Mathematical Precision",
+                      description: "Every curve and angle is calculated with mathematical precision, creating perfect geometric forms that follow natural patterns."
+                    },
+                    {
+                      title: "Fluid Motion",
+                      description: "Seamless transitions between shapes create a hypnotic flow that guides the user through your content."
+                    },
+                    {
+                      title: "Interactive Canvas",
+                      description: "The shapes respond to user interactions, creating a dynamic experience that feels alive and responsive."
+                    }
+                  ].map((item, index) => (
+                    <motion.div
+                      key={item.title}
+                      className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-2xl p-6"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 * index, duration: 0.6 }}
+                      viewport={{ once: true }}
+                      whileHover={{ y: -5, scale: 1.02 }}
+                    >
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300">
+                        {item.description}
+                      </p>
+                    </motion.div>
+                  ))}
+                </motion.div>
+
+                <motion.div
+                  className="relative"
+                  initial={{ x: 50, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  viewport={{ once: true }}
+                >
+                  <motion.div
+                    className="w-full h-96 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-3xl flex items-center justify-center relative overflow-hidden"
+                    animate={{
+                      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                    }}
+                    transition={{
+                      duration: 15,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                    style={{
+                      backgroundSize: '200% 200%',
+                    }}
+                  >
+                    <motion.div
+                      className="absolute inset-0 opacity-30"
+                      style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.1'%3E%3Cpath d='M20 20c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10zm10 0c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10z'/%3E%3C/g%3E%3C/svg%3E")`
+                      }}
+                    />
+                    <motion.div
+                      className="text-6xl"
+                      animate={{
+                        rotate: [0, 360],
+                        scale: [1, 1.1, 1],
+                      }}
+                      transition={{
+                        duration: 10,
+                        repeat: Infinity,
+                        ease: "linear"
+                      }}
+                    >
+                      🎨
+                    </motion.div>
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            </div>
+          </section>
+        </PageTransition>
 
         {/* Features Section */}
-        <ScrollSection
-          id="features"
-          title="Seamless Animations"
-          description="Powered by cutting-edge web technologies, every morph, scale, and rotation is precisely choreographed to create a fluid, responsive experience that adapts to your scrolling pace."
-          image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop"
-          reverse={true}
-          className="lg:ml-96"
-        />
+        <PageTransition>
+          <Features />
+        </PageTransition>
 
-        {/* Showcase Section */}
-        <ScrollSection
-          id="showcase"
-          title="Interactive Experience"
-          description="Engage with shapes that respond to your presence. The boundary between observer and artwork blurs as you become part of this dynamic, ever-changing digital canvas."
-          reverse={false}
-          className="lg:mr-96"
-        />
+        {/* Testimonials Section */}
+        <PageTransition>
+          <Testimonials />
+        </PageTransition>
+
+        {/* Pricing Section */}
+        <PageTransition>
+          <Pricing />
+        </PageTransition>
 
         {/* Contact Section */}
-        <ScrollSection
-          id="contact"
-          title="Join the Journey"
-          description="Ready to explore more? Dive deeper into the world of interactive web experiences and discover how technology can create meaningful, beautiful connections."
-          buttonText="Get Started"
-          onButtonClick={() => console.log('Get started clicked')}
-          reverse={true}
-          className="lg:ml-96"
-        />
+        <PageTransition>
+          <Contact />
+        </PageTransition>
+
+        {/* Footer */}
+        <PageTransition>
+          <Footer />
+        </PageTransition>
       </div>
     </SmoothScroll>
   );
