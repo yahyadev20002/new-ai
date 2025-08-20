@@ -14,6 +14,7 @@ export const ShapeAnimator: React.FC<ShapeAnimatorProps> = ({ containerRef }) =>
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   useShapeAnimation({
     shapeRef,
@@ -21,30 +22,45 @@ export const ShapeAnimator: React.FC<ShapeAnimatorProps> = ({ containerRef }) =>
     containerRef,
   });
 
-  // Mouse tracking for interactive effects
+  // Ensure we only run client-side code
   useEffect(() => {
+    setIsMounted(true);
+    
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
     const handleScroll = () => {
-      const scrollTop = window.pageYOffset;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = scrollTop / docHeight;
-      setScrollProgress(progress);
+      if (typeof window !== 'undefined') {
+        const scrollTop = window.pageYOffset;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+        setScrollProgress(progress);
+      }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('scroll', handleScroll);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('scroll', handleScroll);
+      
+      // Initialize scroll progress
+      handleScroll();
+    }
     
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('scroll', handleScroll);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('scroll', handleScroll);
+      }
     };
   }, []);
 
   // Calculate parallax offset based on mouse position
   const calculateParallax = () => {
+    if (!isMounted || typeof window === 'undefined') {
+      return { x: 0, y: 0 };
+    }
+    
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
     const offsetX = (mousePosition.x - centerX) / centerX;
@@ -57,6 +73,11 @@ export const ShapeAnimator: React.FC<ShapeAnimatorProps> = ({ containerRef }) =>
   };
 
   const parallax = calculateParallax();
+
+  // Don't render anything during SSR
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">

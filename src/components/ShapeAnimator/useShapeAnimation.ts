@@ -28,7 +28,8 @@ export const useShapeAnimation = ({
   const shapeTimelineRef = useRef<gsap.core.Timeline | null>(null);
 
   useLayoutEffect(() => {
-    if (!shapeRef.current || !containerRef.current || !ctx) return;
+    // Only run on client side
+    if (typeof window === 'undefined' || !shapeRef.current || !containerRef.current || !ctx) return;
 
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
@@ -172,14 +173,16 @@ export const useShapeAnimation = ({
     window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      if (timelineRef.current) {
-        timelineRef.current.kill();
+      if (typeof window !== 'undefined') {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        if (timelineRef.current) {
+          timelineRef.current.kill();
+        }
+        if (shapeTimelineRef.current) {
+          shapeTimelineRef.current.kill();
+        }
+        window.removeEventListener('mousemove', handleMouseMove);
       }
-      if (shapeTimelineRef.current) {
-        shapeTimelineRef.current.kill();
-      }
-      window.removeEventListener('mousemove', handleMouseMove);
     };
   }, [sections, shapeRef, containerRef, ctx]);
 
